@@ -1,0 +1,31 @@
+version: '3'
+services:
+  mysql-module-5:
+    build: mysql:5.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=root      
+    ports:
+      - "3306:3306"
+    volumes:
+      - 5-module-db-golang:/var/lib/mysql 
+    networks:
+      - module-5
+
+  phpmyadmin-compose:
+    image: phpmyadmin
+    environment:
+      - PMA_HOST=5-module-mysql-module-5-1
+    ports:
+      - "8090:80"
+    depends_on:
+      - mysql-module-5
+    networks:
+      - module-5
+
+volumes:
+  5-module-db-golang:
+
+networks:
+  module-5:
