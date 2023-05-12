@@ -16,8 +16,8 @@ func ExibeAlunos(c *gin.Context) {
 
 func Saudacao(c *gin.Context) {
 	nome := c.Params.ByName("nome")
-	c.JSON(200, gin.H{
-		"Mesangem:": "Usuário: " + nome + "!",
+	c.HTML(http.StatusOK, "saudacao.html", gin.H{
+		"saudacao": nome,
 	})
 }
 
@@ -93,4 +93,16 @@ func BuscaAlunoCpf(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, aluno)
+}
+
+func PaginaIndex(c *gin.Context) {
+	var alunos []models.Aluno
+	database.DB.Find(&alunos)
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"alunos": alunos,
+	})
+}
+
+func PaginaError(c *gin.Context) {
+	c.HTML(http.StatusNotFound, "404.html", nil)
 }
